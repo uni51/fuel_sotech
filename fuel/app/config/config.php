@@ -420,9 +420,9 @@ return array(
 	 *
 	 */
 
-	// 'module_paths' => array(
-	// 	// APPPATH.'modules'.DS
-	// ),
+	 'module_paths' => array(
+	 	 APPPATH.'modules'.DS
+	 ),
 
 	/**
 	 * -------------------------------------------------------------------------
