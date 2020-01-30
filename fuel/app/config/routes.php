@@ -39,4 +39,5 @@ return array(
 	 */
 
 	'hello(/:name)?' => array('welcome/hello', 'name' => 'hello'),
+    'article/(:num)' => 'article/index/$i',
 );

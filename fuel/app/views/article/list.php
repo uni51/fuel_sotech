@@ -20,3 +20,4 @@
     <?php endif; ?>
     <hr>
 <?php endforeach; ?>
+<?php echo $pagination ?>
