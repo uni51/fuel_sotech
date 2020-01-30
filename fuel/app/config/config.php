@@ -56,7 +56,7 @@ return array(
 
 	// 'index_file' => false,
 
-	// 'profiling' => false,
+	'profiling' => true,
 
 	/**
 	 * -------------------------------------------------------------------------
@@ -142,7 +142,7 @@ return array(
 	 *  The default language.
 	 */
 
-	// 'language' => 'en',
+	 'language' => 'ja',
 
 	/**
 	 *  Fallback language when file isn't available for default language.
@@ -154,7 +154,7 @@ return array(
 	 *  PHP set_locale() setting. Use null to not set.
 	 */
 
-	// 'locale' => 'en_US',
+	 'locale' => 'ja_JP.UTF-8',
 
 	/**
 	 * -------------------------------------------------------------------------
@@ -180,7 +180,7 @@ return array(
 	 *  Change the server's default timezone. This is optional.
 	 */
 
-	// 'default_timezone' => null,
+	 'default_timezone' => 'Asia/Tokyo',
 
 	/**
 	 * -------------------------------------------------------------------------
@@ -198,7 +198,7 @@ return array(
 	 *
 	 */
 
-	// 'log_threshold'   => Fuel::L_WARNING,
+	 'log_threshold'   => Fuel::L_ALL,
 	// 'log_path'        => APPPATH.'logs/',
 	// 'log_date_format' => 'Y-m-d H:i:s',
 
@@ -228,7 +228,7 @@ return array(
 		 * ---------------------------------------------------------------------
 		 */
 
-		// 'token_salt' => 'put your salt value here to make the token more secure',
+        'token_salt' => 'bZkHdjHinazQQISwFVqlUo9AVZ2yiwrQtq/QHE6',
 
 		/**
 		 * ---------------------------------------------------------------------
@@ -449,7 +449,7 @@ return array(
 	 * -------------------------------------------------------------------------
 	 */
 
-	// 'always_load' => array(
+	 'always_load' => array(
 		/**
 		 * ---------------------------------------------------------------------
 		 *  These packages are loaded on Fuel's startup.
@@ -467,9 +467,10 @@ return array(
 		 * ---------------------------------------------------------------------
 		 */
 
-		// 'packages' => array(
-		// 	// 'orm',
-		// ),
+		 'packages' => array(
+		 	 'orm',
+             'auth',
+		 ),
 
 		/**
 		 * ---------------------------------------------------------------------
@@ -531,5 +532,5 @@ return array(
 		 */
 
 		// 'language' => array(),
-	// ),
+	 ),
 );
