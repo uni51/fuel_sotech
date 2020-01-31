@@ -16,6 +16,15 @@
     <div class="fill">
         <div class="container">
             <h3><?php echo Html::anchor('article', 'FuelPHP入門ブログ');?></h3>
+            <ul class="nav secondary-nav">
+                <li class="menu">
+                    <?php if (Auth::check()): ?>
+                        <?php echo Html::anchor('article/logout', 'ログアウト'); ?>
+                    <?php else: ?>
+                        <?php echo Html::anchor('article/login', 'ログイン'); ?>
+                    <?php endif; ?>
+                </li>
+            </ul>
         </div>
     </div>
 </div>

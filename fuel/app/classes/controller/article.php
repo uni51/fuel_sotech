@@ -49,4 +49,46 @@ class Controller_Article extends Controller_Template
         $this->template->title = $data['article']->title;
         $this->template->content = View::forge('article/view', $data);
     }
+
+    public function action_login()
+    {
+        // 既にログイン済みであればブログトップページにリダイレクト
+        Auth::check() and Response::redirect('artciles');
+
+        // ビューに渡す配列の初期化
+        $data = array();
+
+//        $auth = Auth::instance();
+
+        // username と password がPOSTされている場合は、認証を試みる
+        if (Input::post('username') and Input::post('password')) {
+            $username = Input::post('username');
+            $password = Input::post('password');
+            $auth = Auth::instance();
+
+            // 認証
+            if($auth->login($username, $password)) {
+                // ブログトップにリダレイクト
+                Response::redirect('article');
+            } else {
+                // 認証失敗時にはビューにerrorをセットする
+                $data['error'] = true;
+            }
+        }
+
+        //usernameとpasswordのいずれか一方でも送信されていない場合
+        //および認証に失敗した場合はログインフォームを表示
+        //ビューの読み込み
+        $this->template->title = 'ログイン';
+        $this->template->content = View::forge('article/login');
+    }
+
+    public function action_logout() {
+        //ログアウト
+        $auth = Auth::instance();
+        $auth->logout();
+
+        //'member'にリダイレクト
+        Response::redirect('article');
+    }
 }
