@@ -7,6 +7,10 @@ class Model_User extends \Orm\Model
 			"label" => "Id",
 			"data_type" => "int",
 		),
+        "username" => array(
+            "label" => "Username",
+            "data_type" => "varchar",
+        ),
 		"email" => array(
 			"label" => "Email",
 			"data_type" => "varchar",
@@ -19,6 +23,14 @@ class Model_User extends \Orm\Model
 			"label" => "Name",
 			"data_type" => "varchar",
 		),
+        "last_login" => array(
+            "label" => "Last login",
+            "data_type" => "int",
+        ),
+        "login_hash" => array(
+            "label" => "Login hash",
+            "data_type" => "string",
+        ),
 		"created_at" => array(
 			"label" => "Created at",
 			"data_type" => "int",
