@@ -9,6 +9,7 @@
         .page-links a{margin:0 10px}
         .page-links .active{margin:0 10px; text-decoration: underline}
         label{float:none;}
+        .validation_error {background-color:#ffecec;}
     </style>
 </head>
 <body>
