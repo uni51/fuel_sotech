@@ -3,30 +3,30 @@
 class Model_Article extends \Orm\Model
 {
 	protected static $_properties = array(
-		"id" => array(
-			"label" => "Id",
-			"data_type" => "int",
-		),
-		"title" => array(
-			"label" => "Title",
-			"data_type" => "varchar",
-		),
-		"body" => array(
-			"label" => "Body",
-			"data_type" => "text",
-		),
-		"user_id" => array(
-			"label" => "User id",
-			"data_type" => "int",
-		),
-		"created_at" => array(
-			"label" => "Created at",
-			"data_type" => "int",
-		),
-		"updated_at" => array(
-			"label" => "Updated at",
-			"data_type" => "int",
-		),
+        'id',
+        'title' => array(
+            'data_type' => 'varchar',
+            'label' => 'タイトル',
+            'validation' => array('required', 'max_length'=>array(10)),
+            'form' => array('type' => 'text'),
+        ),
+        'body' => array(
+            'data_type' => 'text',
+            'label' => '本文',
+            'validation' => array('required'),
+            'form' => array('type' => 'textarea'),
+        ),
+        'user_id' => array(
+            'data_type' => 'int',
+            'validation' => array('required', 'valid_string' => array(array('numeric'))),
+            'form' => array('type' => 'hidden'),
+        ),
+        'created_at' => array(
+            'form' => array('type' => false),
+        ),
+        'updated_at' => array(
+            'form' => array('type' => false),
+        ),
 	);
 
 	protected static $_observers = array(

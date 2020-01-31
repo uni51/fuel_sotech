@@ -8,7 +8,7 @@ class Controller_Article extends Controller_Template
     public function before()
     {
         parent::before();
-        if(!Auth::check() and !in_array(Request::active()->action, array('login', 'index', 'view'))) {
+        if (!Auth::check() and !in_array(Request::active()->action, array('login', 'index', 'view'))) {
             Response::redirect('article/login');
         }
     }
@@ -39,7 +39,62 @@ class Controller_Article extends Controller_Template
         //ビューの読み込み
         $this->template->title = '記事一覧';
         $this->template->content = View::forge('article/list', $data);
-        $this->template->content->set_safe('pagination',$pagination);
+        $this->template->content->set_safe('pagination', $pagination);
+    }
+
+
+    public function action_create()
+    {
+        // Model_Articleオブジェクトを新規作成
+        $article = Model_Article::forge();
+        $article->user_id = Arr::get(Auth::get_user_id(), 1);
+
+        //Fieldsetオブジェクトにモデルを登録
+        $fieldset = Fieldset::forge()->add_model('Model_Article')->populate($article, true);
+
+        //カテゴリのチェックボックス用のオプション配列の作成
+        $categories = Model_Category::find('all');
+        $category_options = array();
+        foreach ($categories as $category) {
+            $category_options[$category->id] = $category->name;
+        }
+        //フォーム要素の追加
+        $form = $fieldset->form();
+
+        //カテゴリチェックボックスの追加
+        $form->add('category_id', 'カテゴリ', array('type' => 'checkbox', 'options' => $category_options));
+
+        //投稿ボタンの追加
+        $form->add('submit', '', array('type' => 'submit', 'value' => '投稿', 'class' => 'btn medium primary'));
+
+        //Validationの実行
+        if ($fieldset->validation()->run()) {
+            //Validationに成功したフィールドの読み込み
+            $fields = $fieldset->validated();
+
+            //Model_Articleオブジェクトの生成
+            $article = Model_Article::forge();
+
+            //Model_Articleオブジェクトのプロパティの設定
+            $article->title = $fields['title'];
+            $article->body = $fields['body'];
+            $article->user_id = $fields['user_id'];
+
+            //カテゴリIDからカテゴリオブジェクトを生成して$categoriesプロパティに設定
+            if ($fields['category_id']) {
+                foreach ($fields['category_id'] as $category_id) {
+                    $category = Model_Category::find($category_id);
+                    if ($category) {
+                        $article->categories[] = $category;
+                    }
+                }
+            }
+            if ($article->save()) {
+                Response::redirect('article/view/' . $article->id);
+            }
+        }
+        $this->template->title = '新規投稿';
+        $this->template->set('content', $fieldset->build(), false);
     }
 
     public function action_view($id = 0)
@@ -74,7 +129,7 @@ class Controller_Article extends Controller_Template
             $auth = Auth::instance();
 
             // 認証
-            if($auth->login($username, $password)) {
+            if ($auth->login($username, $password)) {
                 // ブログトップにリダレイクト
                 Response::redirect('article');
             } else {
@@ -89,7 +144,8 @@ class Controller_Article extends Controller_Template
         $this->template->content = View::forge('article/login');
     }
 
-    public function action_logout() {
+    public function action_logout()
+    {
         //ログアウト
         $auth = Auth::instance();
         $auth->logout();
@@ -97,4 +153,5 @@ class Controller_Article extends Controller_Template
         //'member'にリダイレクト
         Response::redirect('article');
     }
+
 }
