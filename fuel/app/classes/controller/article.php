@@ -5,6 +5,14 @@ class Controller_Article extends Controller_Template
 
     private $per_page = 3;
 
+    public function before()
+    {
+        parent::before();
+        if(!Auth::check() and !in_array(Request::active()->action, array('login', 'index', 'view'))) {
+            Response::redirect('article/login');
+        }
+    }
+
     public function action_index()
     {
         // ビューに渡す配列の初期化
@@ -57,8 +65,7 @@ class Controller_Article extends Controller_Template
 
         // ビューに渡す配列の初期化
         $data = array();
-
-//        $auth = Auth::instance();
+        $data['error'] = false;
 
         // username と password がPOSTされている場合は、認証を試みる
         if (Input::post('username') and Input::post('password')) {
@@ -71,7 +78,6 @@ class Controller_Article extends Controller_Template
                 // ブログトップにリダレイクト
                 Response::redirect('article');
             } else {
-                // 認証失敗時にはビューにerrorをセットする
                 $data['error'] = true;
             }
         }
