@@ -97,6 +97,43 @@ class Controller_Article extends Controller_Template
         $this->template->set('content', $fieldset->build(), false);
     }
 
+
+    public function action_edit($id = 0) {
+        //Model_Articleオブジェクトの読み込み
+        if ($id) {
+            $article = Model_Article::find($id);
+            if (!$article or $article->user_id != Arr::get(Auth::get_user_id(), 1)) {
+                Response::redirect('article');
+            }
+        }
+
+        //Fieldsetオブジェクトにモデルを登録
+        $fieldset = Fieldset::forge()->add_model('Model_Article')->populate($article, true);
+
+        //フォーム要素の追加
+        $form = $fieldset->form();
+
+        //投稿ボタンの追加
+        $form->add('submit', '', array('type' => 'submit', 'value' => '更新', 'class' => 'btn medium primary'));
+
+        //Validationの実行
+        if ($fieldset->validation()->run()) {
+            //Validationに成功したフィールドの読み込み
+            $fields = $fieldset->validated();
+
+            //Model_Articleオブジェクトのプロパティの設定
+            $article->title = $fields['title'];
+            $article->body = $fields['body'];
+            $article->user_id = $fields['user_id'];
+            if ($article->save()) {
+                Response::redirect('article/view/' . $article->id);
+            }
+        }
+        $this->template->title = '編集';
+        $this->template->set('content', $fieldset->build(), false);
+    }
+
+
     public function action_view($id = 0)
     {
         //ビューに渡す配列の初期化
